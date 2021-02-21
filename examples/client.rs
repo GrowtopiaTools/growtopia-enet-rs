@@ -14,6 +14,7 @@ fn main() {
             ChannelLimit::Maximum,
             BandwidthLimit::Unlimited,
             BandwidthLimit::Unlimited,
+            true
         )
         .expect("could not create host");
 

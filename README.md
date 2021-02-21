@@ -1,56 +1,35 @@
-# High-Level, Rust-y Bindings for the ENet library
+# ENet library in Rust, modified for Growtopia
 
-[![Documentation](https://docs.rs/enet/badge.svg)](https://docs.rs/enet)
-[![Crates.io](https://img.shields.io/crates/v/enet.svg)](https://crates.io/crates/enet)
-[![License](https://img.shields.io/crates/l/enet.svg)](https://github.com/futile/enet-rs)
-
-This crate aims to provide high-level, rust-y bindings for the ENet library.
-ENet is a networking library for games that builds on UDP,
-offering optional reliability, congestion control, connection-orientation and
-other related features. For more information, check out the
-[ENet Website](http://enet.bespin.org).
-
-## Status
-
-For now, this library is **alpha**. It builds on the C-bindings for ENet,
-the [enet-sys crate](https://github.com/ruabmbua/enet-sys). A lot of the
-functionality is there, but not everything. Also, since ENet has
-pretty unclear lifetime semantics, you might actually run into cases where
-things crash. **In those cases, or when something is missing/not yet in the API,
-open a bug report, and I will look into it as soon as possible.**
+This is a modified version of the [enet-rs](https://github.com/futile/enet-rs) library that works with Growtopia's new protocol.
 
 ## Usage
 
-To check what the latest released version is, check on
-[https://crates.io/crates/enet](crates.io), or use `cargo add` from 
-[cargo edit](https://github.com/killercup/cargo-edit) to automatically add a
-dependency to the most recent version.
-
-Installation is as simple as adding this to your `Cargo.toml`:
+This will not be uploaded to crates.io, so to use it in your project, you will have to include the git path as a dependency:
 
 ```toml
 [dependencies]
-enet = "0.1"
+enet = { git = "https://github.com/ReimarPB/growtopia-enet-rs" }
 ```
 
-## Documentation & Examples
+## Changes
 
-Documentation is available by running `cargo doc`. An example server and client
-can be found in the `examples` directory.
+[ENet::create_host](https://docs.rs/enet/0.2.3/enet/struct.Enet.html#method.create_host) has an extra parameter: `using_new_packet`. If this is set to true, it will use Ubisoft's new modified protocol.
 
-## License
+### Example
 
-Licensed under either of
+```rust
+let mut host = enet.create_host::<()>(
+    None,
+    1,
+    ChannelLimit::Maximum,
+    BandwidthLimit::Unlimited,
+    BandwidthLimit::Unlimited,
+    true // Uses Growtopia's new protocol
+).unwrap();
+```
 
- * Apache License, Version 2.0
-   ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license
-   ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+### Notes
 
-at your option.
-
-## Contribution
-
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
-dual licensed as above, without any additional terms or conditions.
+* To connect to the official Growtopia servers, `using_new_packet` must be set to true.
+* If a server has this set to true, the `server_data.php` file must have this line added to it: `type2|1`
+* Documentation for the original library can be found [here](https://docs.rs/enet/0.2.3/enet/index.html).

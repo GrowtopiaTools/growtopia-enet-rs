@@ -16,7 +16,7 @@ license = "Apache-2.0 OR MIT"
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-enet-sys = "0.2.2"
+enet-sys = { path = "enet-sys" }
 failure = "0.1.5"
 failure_derive = "0.1.5"
 
